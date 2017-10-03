@@ -46,6 +46,39 @@ ALLSHAPES = (DONUT, SQUARE, DIAMOND, LINES, OVAL)
 assert len(ALLCOLORS) * len(ALLSHAPES) * 2 >= BOARDWIDTH * BOARDHEIGHT, "Board is too big for the number of shapes/colors defined."
 
 def main():
-	
+	global FPSCLOCK, DISPLAYSURF
+	pygame.init()
+	FPSCLOCK = pygame.time.Clock()
+	DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
+
+	mousex = 0 #used to store x coordinate of mouse event
+	mousey = 0 #used to store y coordinate of mouse event
+	pygame.display.set_caption('Memory Game')
+
+	mainBoard = getRandomizeBoard()
+	revealedBoxes = generateRevealedBoxesData(False)
+
+	firstSelection = None #store the (x,y) of the first box clicked.
+
+	DISPLAYSURF.fill(BGCOLOR)
+	startGameAnimation(mainBoard)
+
+	while True: # main game loop
+		mouseClicked = False
+
+		DISPLAYSURF.fill(BGCOLOR) # drawing the window
+		drawBoard(mainBoard, revealedBoxes)
+
+		for event in pygame.event.get(): #event handling loop
+			if event.type == QUIT or (event.type == KEYUP and event.key == K_ESCAPE):
+
+				pygame.quit()
+				sys.exit()
+			elif 
+
+
+
+
+
 
 
