@@ -74,7 +74,29 @@ def main():
 
 				pygame.quit()
 				sys.exit()
-			elif 
+			elif event.type == MOUSEMOTION:
+				mousex, mousey == event.pos
+			elif event.type == MOUSEBUTTONUP:
+				mousex, mousey = event.pos
+				mouseClicked = True
+
+		boxx, boxy = getBoxAtPixel(mousex, mousey)
+		if boxx != None and boxy != None:
+			#the mouse is currently over a box
+			if not revealedBoxes[boxx][boxy]:
+				drawHighlightBox(boxx, boxy)
+			if not revealedBoxes[boxx][boxy] and mouseClicked:
+				revealBoxesAnimation(mainBoard, [(boxx, boxy)])
+				revealedBoxes[boxx][boxy] = True # set the box as revealed
+				if firstSelection == None: #the current box was the box clicked
+					firstSelection = (boxx, boxy)
+				else: #the current box was the second box clicked
+					#Check if there is a match between the two icons
+					icon1shape, icon1color = getShapeAndColor(mainBoard, firstSelection[0], firstSelection[1])
+					icon2shape, icon2color = getShapeAndColor(mainBoard, boxx, boxy)
+
+					if icon1shape != icon2shape or icon1color !=icon2color:
+						
 
 
 
