@@ -97,6 +97,76 @@ def main():
 
 					if icon1shape != icon2shape or icon1color !=icon2color:
 						
+						#Icons don't match. Re-cover up both selections.both
+						pygame.time.wait(100) #1000 milliseconds = 1 sec
+						coverBoxesAnimation(mainBoard, [(firstSelection[0], firstSelection[1]), (boxx, boxy)])
+						revealedBoxes[firstSelection[0]][firstSelection[1]] = False
+						revealedBoxes[boxx][boxy] = False
+					elif hasWon(revealedBoxes): # check if all pairs found
+						gameWonAnimation(mainBoard)
+						pygame.time.wait(2000)
+
+						#reset the board
+						mainBoard = getRandomizeBoard()
+						revealedBoxes = generateRevealedBoxesData(False)
+
+						# show the fully unrevealed board for a second
+						drawBoard(mainBoard, revealedBoxes)
+						pygame.display.update()
+						pygame.time.wait(1000)
+
+						# Replay the start game animation
+						startGameAnimation(mainBoard)
+					firstSelection = None #reset firstSelection variable
+					
+		# Redraw the screen and wait a clock tick
+		pygame.display.update()
+		FPSCLOCK.tick(FPS)
+
+
+def generateRevealedBoxesData(val):
+	revealedBoxes = []
+	for i in range(BOARDWIDTH):
+		revealedBoxes.append([val] * BOARDHEIGHT)
+	return revealedBoxes
+
+
+def getRandomizedBoard():
+	# Get a list of every possible shape in every possible color.
+	icons = []
+	for color in ALLCOLORS:
+		for shape in ALLSHAPES:
+			icons.append((shape, color))
+
+		random.shuffle(icons) # randomize the order of the icons list
+		numIconsUsed = int(BOARDWIDTH * BOARDHEIGHT / 2) # calculate how many icons are needed
+		icons = icons[:numIconsUsed] * 2 # make two of each
+		random.shuffle(icons)
+
+		# Create the board data structure, with randomly placed icons.
+		board = []
+		for x in range(BOARDWIDTH):
+			column = []
+			for y in range(BOARDHEIGHT):
+				column.append(icons[0])
+				del icons[0] # remove the icons as we assign them
+			board.append(column)
+		return board
+
+def splitIntoGroupsOf(groupSize, theList):
+	#splits a list into a list of lists, where the inner lists have at 
+	# most groupSize number of items
+	result = []
+	for i in range(0, len(theList), groupSize):
+		result.append(theList[i:i + groupSize])
+	return result
+
+def leftTopCoordsOfBox(boxx, boxy):
+	# Conver board coordinates to pixel coordinates
+	left = boxx * (BOXSIZE + GAPSIZE) + XMARGIN
+	top = boxy * (BOXSIZE + GAPSIZE) + YMARGIN
+	return (left, top)
+
 
 
 
